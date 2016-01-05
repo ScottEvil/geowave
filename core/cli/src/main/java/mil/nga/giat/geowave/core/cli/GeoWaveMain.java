@@ -1,18 +1,31 @@
 package mil.nga.giat.geowave.core.cli;
 
-import org.apache.commons.cli.BasicParser;
-import org.apache.commons.cli.CommandLine;
-import org.apache.commons.cli.Options;
-import org.apache.commons.cli.ParseException;
-import org.apache.commons.cli.Parser;
+import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.ServiceLoader;
+
+import mil.nga.giat.geowave.core.index.StringUtils;
+import mil.nga.giat.geowave.core.store.DataStoreFactorySpi;
+import mil.nga.giat.geowave.core.store.GeoWaveStoreFinder;
+
+import org.apache.commons.cli.HelpFormatter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import com.beust.jcommander.JCommander;
+import com.beust.jcommander.ParameterException;
 
 /**
  * This is the primary entry point for command line tools. When run it will
  * expect an operation is specified, and will use the appropriate command-line
  * driver for the chosen operation.
- * 
+ *
  */
 public class GeoWaveMain
 {
@@ -25,42 +38,116 @@ public class GeoWaveMain
 
 	public static int run(
 			final String[] args ) {
-		if (args.length < 1 || args[0].trim().equals(
-				"--help")) {
-			OperationCommandLineOptions.printHelp();
+		final GeneralGeoWaveOptions opts = new GeneralGeoWaveOptions();
+		final JCommander commander = new JCommander(
+				opts);
+		final List<CLIOperation> operations = getRegisteredOperations();
+		final Map<String, CLIOperation> operationMap = new HashMap<String, CLIOperation>();
+		for (final CLIOperation op : operations) {
+			final String opName = op.getOperationName();
+			try {
+				addCommand(
+						commander,
+						opName,
+						op);
+			}
+			catch (final ParameterException pe) {
+				LOGGER.error(
+						"Multiple GeoWave CLI Operations cannot be registered with the same name",
+						pe);
+				commander.usage();
+				return -1;
+			}
+			operationMap.put(
+					opName,
+					op);
 		}
-
-		final Options operations = new Options();
-
-		OperationCommandLineOptions.applyOptions(operations);
-
-		final String[] optionsArgs = new String[args.length - 1];
-		System.arraycopy(
-				args,
-				1,
-				optionsArgs,
-				0,
-				optionsArgs.length);
-		final String[] operationsArgs = new String[] {
-			args[0]
-		};
-		final Parser parser = new BasicParser();
-		CommandLine operationCommandLine;
-		try {
-			operationCommandLine = parser.parse(
-					operations,
-					operationsArgs,
-					true);
-			final OperationCommandLineOptions operationOption = OperationCommandLineOptions.parseOptions(operationCommandLine);
-
-			return (operationOption.getOperation().getDriver().runOperation(
-					optionsArgs) ? 0 : -1);
+		commander.setAcceptUnknownOptions(true);
+		commander.parse(args);
+		boolean help = false;
+		if (opts.isHelp()) {
+			commander.usage();
+			help = true;
 		}
-		catch (final ParseException e) {
-			LOGGER.error(
-					"Unable to parse operation",
-					e);
-			return -1;
+		if (opts.isListDataStores()) {
+			listDataStores();
+			help = true;
 		}
+		if (!help) {
+			final String parsedCommand = commander.getParsedCommand();
+			CLIOperation selectedOp = null;
+
+			if (parsedCommand != null) {
+				selectedOp = operationMap.get(parsedCommand);
+			}
+			if (selectedOp == null) {
+				JCommander.getConsole().println(
+						"Unable to parse command");
+				commander.usage();
+				return -1;
+			}
+			if (!selectedOp.doOperation(commander)) {
+				return -1;
+			}
+		}
+		return 0;
+	}
+
+	private static void addCommand(
+			final JCommander parentCommand,
+			final String commandName,
+			final CLIOperation operation ) {
+		parentCommand.addCommand(
+				commandName,
+				operation);
+		final JCommander commander = parentCommand.getCommands().get(
+				commandName);
+		operation.init(commander);
+	}
+
+	private static void listDataStores() {
+		final HelpFormatter formatter = new HelpFormatter();
+		final PrintWriter pw = new PrintWriter(
+				new OutputStreamWriter(
+						System.out,
+						StringUtils.UTF8_CHAR_SET));
+
+		pw.println("Available datastores currently registered:\n");
+		final Map<String, DataStoreFactorySpi> dataStoreFactories = GeoWaveStoreFinder.getRegisteredDataStoreFactories();
+		for (final Entry<String, DataStoreFactorySpi> dataStoreFactoryEntry : dataStoreFactories.entrySet()) {
+			final DataStoreFactorySpi dataStoreFactory = dataStoreFactoryEntry.getValue();
+			final String desc = dataStoreFactory.getDescription() == null ? "no description" : dataStoreFactory.getDescription();
+			final String text = dataStoreFactory.getName() + ":\n" + desc;
+
+			formatter.printWrapped(
+					pw,
+					formatter.getWidth(),
+					5,
+					text);
+			pw.println();
+		}
+		pw.flush();
+	}
+
+	private static List<CLIOperation> operationRegistry = null;
+
+	private static synchronized List<CLIOperation> getRegisteredOperations() {
+		if (operationRegistry == null) {
+			operationRegistry = new ArrayList<CLIOperation>();
+			final Iterator<CLIOperationProviderSpi> operationProviders = ServiceLoader.load(
+					CLIOperationProviderSpi.class).iterator();
+			while (operationProviders.hasNext()) {
+				final CLIOperationProviderSpi operationProvider = operationProviders.next();
+				if (operationProvider != null) {
+					final CLIOperation[] operations = operationProvider.createOperations();
+					if ((operations != null) && (operations.length > 0)) {
+						for (final CLIOperation op : operations) {
+							operationRegistry.add(op);
+						}
+					}
+				}
+			}
+		}
+		return operationRegistry;
 	}
 }

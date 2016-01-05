@@ -1,12 +1,5 @@
 package mil.nga.giat.geowave.adapter.vector.ingest;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-
-import org.opengis.feature.simple.SimpleFeature;
-
-import mil.nga.giat.geowave.core.ingest.IngestFormatOptionProvider;
 import mil.nga.giat.geowave.core.ingest.IngestFormatPluginProviderSpi;
 import mil.nga.giat.geowave.core.ingest.avro.AvroFormatPlugin;
 import mil.nga.giat.geowave.core.ingest.hdfs.mapreduce.IngestFromHdfsPlugin;
@@ -51,13 +44,13 @@ abstract public class AbstractSimpleFeatureIngestFormat<I> implements
 	}
 
 	@Override
-	public IngestFormatOptionProvider getIngestFormatOptionProvider() {
-		return new MultiOptionProvider(
+	public Object[] getIngestFormatOptions() {
+		return new Object[] {
 				getIngestFormatOptionProviders().toArray(
-						new IngestFormatOptionProvider[] {}));
+						new Object[] {}));
 	}
 
-	private List<IngestFormatOptionProvider> getIngestFormatOptionProviders() {
+	private List<Object> getIngestFormatOptionProviders() {
 		// TODO: because other formats are not yet implemented,
 		// don't expose the options to the user
 		final List<IngestFormatOptionProvider> providers = new ArrayList<IngestFormatOptionProvider>();

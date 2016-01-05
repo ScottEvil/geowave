@@ -53,7 +53,6 @@ public class ClearNamespaceDriver extends
 
 	@Override
 	protected boolean runInternal(
-			final String[] args,
 			final List<IngestFormatPluginProviderSpi<?, ?>> pluginProviders ) {
 		// just check if the flag to clear namespaces is set, and even if it is
 		// not, clear it, but only if a namespace is provided
