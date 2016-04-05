@@ -70,7 +70,6 @@
 #include "jace/proxy/mil/nga/giat/geowave/core/index/ByteArrayId.h"
 #include "jace/proxy/mil/nga/giat/geowave/core/store/adapter/DataAdapter.h"
 #include "jace/proxy/mil/nga/giat/geowave/core/store/adapter/statistics/DataStatistics.h"
-#include "jace/proxy/mil/nga/giat/geowave/core/store/adapter/statistics/StatisticalDataAdapter.h"
 #include "jace/proxy/mil/nga/giat/geowave/core/store/adapter/WritableDataAdapter.h"
 #include "jace/proxy/mil/nga/giat/geowave/core/store/data/visibility/UnconstrainedVisibilityHandler.h"
 #include "jace/proxy/mil/nga/giat/geowave/core/store/data/visibility/UniformVisibilityWriter.h"
