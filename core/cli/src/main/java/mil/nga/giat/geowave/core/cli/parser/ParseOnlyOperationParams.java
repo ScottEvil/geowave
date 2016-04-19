@@ -6,12 +6,12 @@ import java.util.Map;
 
 import com.beust.jcommander.JCommander;
 
-import mil.nga.giat.geowave.core.cli.api.JCommanderOperationParams;
 import mil.nga.giat.geowave.core.cli.api.Operation;
+import mil.nga.giat.geowave.core.cli.api.OperationParams;
 import mil.nga.giat.geowave.core.cli.prefix.JCommanderTranslationMap;
 
 public class ParseOnlyOperationParams implements
-		JCommanderOperationParams
+		OperationParams
 {
 
 	private final Map<String, Object> context = new HashMap<String, Object>();
@@ -35,12 +35,10 @@ public class ParseOnlyOperationParams implements
 		return this.context;
 	}
 
-	@Override
 	public JCommander getCommander() {
 		return this.commander;
 	}
 
-	@Override
 	public JCommanderTranslationMap getTranslationMap() {
 		return this.translationMap;
 	}
