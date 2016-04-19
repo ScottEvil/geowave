@@ -104,4 +104,14 @@ public class CopyStoreCommand implements
 				existingProps);
 
 	}
+
+	public List<String> getParameters() {
+		return parameters;
+	}
+
+	public void setParameters(String existingStore, String newStore) {
+		this.parameters = new ArrayList<String>();
+		this.parameters.add(existingStore);
+		this.parameters.add(newStore);
+	}
 }
