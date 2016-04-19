@@ -104,15 +104,17 @@ public class CopyIndexCommand implements
 				existingProps);
 
 	}
-	
+
 	public List<String> getParameters() {
 		return parameters;
 	}
 
-	public void setParameters(String existingIndex, String newIndex) {
+	public void setParameters(
+			String existingIndex,
+			String newIndex ) {
 		this.parameters = new ArrayList<String>();
 		this.parameters.add(existingIndex);
 		this.parameters.add(newIndex);
 	}
-	
+
 }

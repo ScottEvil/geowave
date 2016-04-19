@@ -23,11 +23,17 @@ public class JCommanderPropertiesTransformerTest
 		transformer.addObject(args);
 		Map<String, String> props = new HashMap<String, String>();
 		transformer.transformToMap(props);
-		Assert.assertEquals(2, props.size());
-		Assert.assertEquals("blah", props.get("password"));
-		Assert.assertEquals("user", props.get("username"));
+		Assert.assertEquals(
+				2,
+				props.size());
+		Assert.assertEquals(
+				"blah",
+				props.get("password"));
+		Assert.assertEquals(
+				"user",
+				props.get("username"));
 	}
-	
+
 	@Test
 	public void testWithDelegate() {
 		DelegateArgs args = new DelegateArgs();
@@ -38,12 +44,20 @@ public class JCommanderPropertiesTransformerTest
 		transformer.addObject(args);
 		Map<String, String> props = new HashMap<String, String>();
 		transformer.transformToMap(props);
-		Assert.assertEquals(3, props.size());
-		Assert.assertEquals("blah", props.get("password"));
-		Assert.assertEquals("user", props.get("username"));
-		Assert.assertEquals("add", props.get("additional"));
+		Assert.assertEquals(
+				3,
+				props.size());
+		Assert.assertEquals(
+				"blah",
+				props.get("password"));
+		Assert.assertEquals(
+				"user",
+				props.get("username"));
+		Assert.assertEquals(
+				"add",
+				props.get("additional"));
 	}
-	
+
 	@Test
 	public void testWithPrefix() {
 		DelegatePrefixArgs args = new DelegatePrefixArgs();
@@ -54,35 +68,46 @@ public class JCommanderPropertiesTransformerTest
 		transformer.addObject(args);
 		Map<String, String> props = new HashMap<String, String>();
 		transformer.transformToMap(props);
-		Assert.assertEquals(3, props.size());
-		Assert.assertEquals("blah", props.get("abc.password"));
-		Assert.assertEquals("user", props.get("abc.username"));
-		Assert.assertEquals("add", props.get("additional"));
+		Assert.assertEquals(
+				3,
+				props.size());
+		Assert.assertEquals(
+				"blah",
+				props.get("abc.password"));
+		Assert.assertEquals(
+				"user",
+				props.get("abc.username"));
+		Assert.assertEquals(
+				"add",
+				props.get("additional"));
 	}
-	
-	public class Args {
+
+	public class Args
+	{
 		@Parameter(names = "--username")
 		private String userName;
-		
+
 		@Parameter(names = "--password")
 		private String passWord;
 	}
-	
-	public class DelegateArgs {
+
+	public class DelegateArgs
+	{
 		@ParametersDelegate
 		private Args args = new Args();
-		
+
 		@Parameter(names = "--additional")
 		private String additional;
 	}
-	
-	public class DelegatePrefixArgs {
+
+	public class DelegatePrefixArgs
+	{
 		@ParametersDelegate
 		@PrefixParameter(prefix = "abc")
 		private Args args = new Args();
-		
+
 		@Parameter(names = "--additional")
 		private String additional;
 	}
-	
+
 }

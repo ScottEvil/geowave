@@ -16,7 +16,8 @@ import mil.nga.giat.geowave.core.cli.annotations.PrefixParameter;
 
 public class JCommanderPrefixTranslatorTest
 {
-	private JCommander prepareCommander(JCommanderTranslationMap map) {
+	private JCommander prepareCommander(
+			JCommanderTranslationMap map ) {
 		JCommander commander = new JCommander();
 		map.createFacadeObjects();
 		for (Object obj : map.getObjects()) {
@@ -24,7 +25,7 @@ public class JCommanderPrefixTranslatorTest
 		}
 		return commander;
 	}
-	
+
 	@Test
 	public void testNullDelegate() {
 		JCommanderPrefixTranslator translator = new JCommanderPrefixTranslator();
@@ -32,22 +33,34 @@ public class JCommanderPrefixTranslatorTest
 		JCommander commander = prepareCommander(translator.translate());
 		commander.parse();
 	}
-	
+
 	@Test
 	public void testMapDelegatesPrefix() {
 		JCommanderPrefixTranslator translator = new JCommanderPrefixTranslator();
 		Arguments args = new Arguments();
-		args.argChildren.put("abc", new ArgumentChildren());
-		args.argChildren.put("def", new ArgumentChildren());
+		args.argChildren.put(
+				"abc",
+				new ArgumentChildren());
+		args.argChildren.put(
+				"def",
+				new ArgumentChildren());
 		translator.addObject(args);
 		JCommanderTranslationMap map = translator.translate();
 		JCommander commander = prepareCommander(map);
-		commander.parse("--abc.arg", "5", "--def.arg", "blah");
+		commander.parse(
+				"--abc.arg",
+				"5",
+				"--def.arg",
+				"blah");
 		map.transformToOriginal();
-		Assert.assertEquals("5", args.argChildren.get("abc").arg);
-		Assert.assertEquals("blah", args.argChildren.get("def").arg);
+		Assert.assertEquals(
+				"5",
+				args.argChildren.get("abc").arg);
+		Assert.assertEquals(
+				"blah",
+				args.argChildren.get("def").arg);
 	}
-	
+
 	@Test
 	public void testCollectionDelegatesPrefix() {
 		JCommanderPrefixTranslator translator = new JCommanderPrefixTranslator();
@@ -57,55 +70,77 @@ public class JCommanderPrefixTranslatorTest
 		translator.addObject(args);
 		JCommanderTranslationMap map = translator.translate();
 		JCommander commander = prepareCommander(map);
-		commander.parse("--arg", "5", "--arg2", "blah");
+		commander.parse(
+				"--arg",
+				"5",
+				"--arg2",
+				"blah");
 		map.transformToOriginal();
-		Assert.assertEquals("5", ((ArgumentChildren)args.argChildren.get(0)).arg);
-		Assert.assertEquals("blah", ((ArgumentChildrenOther)args.argChildren.get(1)).arg2);
+		Assert.assertEquals(
+				"5",
+				((ArgumentChildren) args.argChildren.get(0)).arg);
+		Assert.assertEquals(
+				"blah",
+				((ArgumentChildrenOther) args.argChildren.get(1)).arg2);
 	}
-	
+
 	@Test
 	public void testPrefixParameter() {
 		JCommanderPrefixTranslator translator = new JCommanderPrefixTranslator();
-		PrefixedArguments args = new PrefixedArguments();		
+		PrefixedArguments args = new PrefixedArguments();
 		translator.addObject(args);
 		JCommanderTranslationMap map = translator.translate();
 		JCommander commander = prepareCommander(map);
-		commander.parse("--abc.arg", "5", "--arg", "blah");
+		commander.parse(
+				"--abc.arg",
+				"5",
+				"--arg",
+				"blah");
 		map.transformToOriginal();
-		Assert.assertEquals("5", args.child.arg);
-		Assert.assertEquals("blah", args.blah);
+		Assert.assertEquals(
+				"5",
+				args.child.arg);
+		Assert.assertEquals(
+				"blah",
+				args.blah);
 	}
 
-	public static class PrefixedArguments {
+	public static class PrefixedArguments
+	{
 		@ParametersDelegate
 		@PrefixParameter(prefix = "abc")
 		private ArgumentChildren child = new ArgumentChildren();
-		
+
 		@Parameter(names = "--arg")
 		private String blah;
 	}
-	
-	public static class NullDelegate {
+
+	public static class NullDelegate
+	{
 		@ParametersDelegate
-		private ArgumentChildren value = null;		
+		private ArgumentChildren value = null;
 	}
-	
-	public static class ArgumentsCollection {
+
+	public static class ArgumentsCollection
+	{
 		@ParametersDelegate
 		private List<Object> argChildren = new ArrayList<Object>();
 	}
-	
-	public static class Arguments {
+
+	public static class Arguments
+	{
 		@ParametersDelegate
 		private Map<String, ArgumentChildren> argChildren = new HashMap<String, ArgumentChildren>();
 	}
-	
-	public static class ArgumentChildren {
+
+	public static class ArgumentChildren
+	{
 		@Parameter(names = "--arg")
 		private String arg;
 	}
-	
-	public static class ArgumentChildrenOther {
+
+	public static class ArgumentChildrenOther
+	{
 		@Parameter(names = "--arg2")
 		private String arg2;
 	}

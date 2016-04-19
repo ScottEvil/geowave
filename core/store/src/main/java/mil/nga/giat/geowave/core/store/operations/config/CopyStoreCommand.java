@@ -109,7 +109,9 @@ public class CopyStoreCommand implements
 		return parameters;
 	}
 
-	public void setParameters(String existingStore, String newStore) {
+	public void setParameters(
+			String existingStore,
+			String newStore ) {
 		this.parameters = new ArrayList<String>();
 		this.parameters.add(existingStore);
 		this.parameters.add(newStore);

@@ -56,12 +56,13 @@ public class ExplainCommand implements
 		SortedMap<String, ParameterDescription> parameterDescs = new TreeMap<String, ParameterDescription>();
 		List<ParameterDescription> parameters = params.getCommander().getParameters();
 		for (ParameterDescription pd : parameters) {
-			parameterDescs.put(pd.getLongestName(), pd);
+			parameterDescs.put(
+					pd.getLongestName(),
+					pd);
 		}
 
 		// Then output
-		for (ParameterDescription pd : parameterDescs.values())
-		{
+		for (ParameterDescription pd : parameterDescs.values()) {
 
 			Object value = null;
 			try {

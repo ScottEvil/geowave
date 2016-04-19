@@ -62,7 +62,9 @@ public class SetCommand extends
 		return parameters;
 	}
 
-	public void setParameters(String key, String value) {
+	public void setParameters(
+			String key,
+			String value ) {
 		this.parameters = new ArrayList<String>();
 		this.parameters.add(key);
 		this.parameters.add(value);

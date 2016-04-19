@@ -22,17 +22,20 @@ public class OperationRegistry
 	private static Map<Class<?>, OperationEntry> operationMapByClass = null;
 
 	public OperationRegistry() {
-		
+
 		init();
 	}
 
-	public OperationRegistry(List<OperationEntry> entries) {
+	public OperationRegistry(
+			List<OperationEntry> entries ) {
 		operationMapByClass = new HashMap<Class<?>, OperationEntry>();
 		for (OperationEntry entry : entries) {
-			operationMapByClass.put(entry.getOperationClass(), entry);
+			operationMapByClass.put(
+					entry.getOperationClass(),
+					entry);
 		}
 	}
-	
+
 	private synchronized void init() {
 		if (operationMapByClass == null) {
 			operationMapByClass = new HashMap<Class<?>, OperationEntry>();
@@ -83,7 +86,7 @@ public class OperationRegistry
 	public Collection<OperationEntry> getAllOperations() {
 		return Collections.unmodifiableCollection(operationMapByClass.values());
 	}
-	
+
 	/**
 	 * Get the exported service entry by class name
 	 * 

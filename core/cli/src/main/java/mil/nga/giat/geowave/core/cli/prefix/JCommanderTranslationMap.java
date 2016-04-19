@@ -274,9 +274,11 @@ public class JCommanderTranslationMap
 				// implemented as of 1.55,
 				// an unreleased version.
 				if (entry.isRequired() && entry.hasValue()) {
-					disableBooleanMember(REQUIRED_MEMBER, newField);
+					disableBooleanMember(
+							REQUIRED_MEMBER,
+							newField);
 				}
-				
+
 				// Rename the field so there are no conflicts. Name really
 				// doesn't matter,
 				// but it's used for translation in transMap.
