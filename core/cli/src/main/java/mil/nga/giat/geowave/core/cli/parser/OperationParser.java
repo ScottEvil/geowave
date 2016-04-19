@@ -194,7 +194,7 @@ public class OperationParser
 	 * @param operations
 	 * @param args
 	 */
-	public void parseParameters(
+	private void parseParameters(
 			ParseOnlyOperationParams params ) {
 
 		Collection<Operation> opList = params.getOperationMap().values();
@@ -239,7 +239,7 @@ public class OperationParser
 	 * 
 	 * @param args
 	 */
-	public CommandLineOperationParams parseOperation(
+	private CommandLineOperationParams parseOperation(
 			OperationEntry topLevel,
 			String[] args ) {
 
