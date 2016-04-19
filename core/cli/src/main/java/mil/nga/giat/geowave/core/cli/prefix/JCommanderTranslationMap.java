@@ -7,7 +7,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.IdentityHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -39,7 +38,6 @@ public class JCommanderTranslationMap
 	public static final String REQUIRED_MEMBER = "required";
 	public static final String PREFIX_SEPARATOR = ".";
 
-	private final Map<Object, String> prefixMap = new IdentityHashMap<Object, String>();
 	private final Map<String, TranslationEntry> translations = new HashMap<String, TranslationEntry>();
 	private final List<Object> objects = new ArrayList<Object>();
 	private boolean hasMainParameter = false;
@@ -76,18 +74,6 @@ public class JCommanderTranslationMap
 	public TranslationEntry getEntry(
 			String name ) {
 		return translations.get(name);
-	}
-
-	/**
-	 * The object prefix is the prefix that's used to translate all entries that
-	 * live within this object itself.
-	 * 
-	 * @param object
-	 * @return
-	 */
-	public String getObjectPrefix(
-			Object object ) {
-		return prefixMap.get(object);
 	}
 
 	/**
@@ -129,22 +115,6 @@ public class JCommanderTranslationMap
 					// a security violation.
 				}
 			}
-		}
-	}
-
-	/**
-	 * If the prefix hasn't been tracked, then track it.
-	 * 
-	 * @param object
-	 * @param prefix
-	 */
-	protected void addObjectPrefix(
-			Object object,
-			String prefix ) {
-		if (!prefixMap.containsKey(object)) {
-			prefixMap.put(
-					object,
-					prefix);
 		}
 	}
 
@@ -304,9 +274,9 @@ public class JCommanderTranslationMap
 				// implemented as of 1.55,
 				// an unreleased version.
 				if (entry.isRequired() && entry.hasValue()) {
-					removeRequiredAnnotation(newField);
+					disableBooleanMember(REQUIRED_MEMBER, newField);
 				}
-
+				
 				// Rename the field so there are no conflicts. Name really
 				// doesn't matter,
 				// but it's used for translation in transMap.
@@ -399,7 +369,8 @@ public class JCommanderTranslationMap
 	 * @param field
 	 * @param prefix
 	 */
-	private void removeRequiredAnnotation(
+	private void disableBooleanMember(
+			String booleanMemberName,
 			CtField field ) {
 
 		// This is the JCommander package name
@@ -414,7 +385,7 @@ public class JCommanderTranslationMap
 			if (annotation.getTypeName().startsWith(
 					packageName)) {
 				// See if it has a 'names' member variable.
-				MemberValue requiredMember = annotation.getMemberValue(REQUIRED_MEMBER);
+				MemberValue requiredMember = annotation.getMemberValue(booleanMemberName);
 
 				// We have a names member!!!
 				if (requiredMember != null) {
