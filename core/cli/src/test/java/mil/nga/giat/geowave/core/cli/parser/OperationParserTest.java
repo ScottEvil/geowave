@@ -98,7 +98,6 @@ public class OperationParserTest
 		parser.parse(
 				op2,
 				new String[] {
-					"op",
 					"--username",
 					"user",
 					"--password",

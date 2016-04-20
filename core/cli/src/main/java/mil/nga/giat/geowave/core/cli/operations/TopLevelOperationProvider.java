@@ -1,6 +1,6 @@
 package mil.nga.giat.geowave.core.cli.operations;
 
-import mil.nga.giat.geowave.core.cli.spi.CLIOperationProviderSpi;
+import mil.nga.giat.geowave.core.cli.CLIOperationProviderSpi;
 
 public class TopLevelOperationProvider implements
 		CLIOperationProviderSpi

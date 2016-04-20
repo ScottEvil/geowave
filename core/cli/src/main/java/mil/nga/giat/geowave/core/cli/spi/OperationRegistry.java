@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.ServiceLoader;
 
+import mil.nga.giat.geowave.core.cli.CLIOperationProviderSpi;
 import mil.nga.giat.geowave.core.cli.api.Operation;
 
 /**
@@ -21,7 +22,6 @@ public class OperationRegistry
 	private Map<Class<?>, OperationEntry> operationMapByClass = null;
 
 	public OperationRegistry() {
-
 		init();
 	}
 

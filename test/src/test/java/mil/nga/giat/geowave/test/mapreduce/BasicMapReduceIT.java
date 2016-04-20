@@ -268,13 +268,14 @@ public class BasicMapReduceIT extends
 		exportDir.mkdir();
 
 		exportCommand.setStoreOptions(getAccumuloStorePluginOptions());
-		exportCommand.setParameters(null);
+		exportCommand.setParameters(
+				hdfs,
+				hdfsBaseDirectory + "/" + TEST_EXPORT_DIRECTORY,
+				null);
 		options.setBatchSize(10000);
 		options.setMinSplits(MIN_INPUT_SPLITS);
 		options.setMaxSplits(MAX_INPUT_SPLITS);
-		options.setHdfsHostPort(hdfs);
 		options.setResourceManagerHostPort(jobtracker);
-		options.setHdfsOutputDirectory(hdfsBaseDirectory + "/" + TEST_EXPORT_DIRECTORY);
 
 		final Configuration conf = getConfiguration();
 		MapReduceTestEnvironment.filterConfiguration(conf);

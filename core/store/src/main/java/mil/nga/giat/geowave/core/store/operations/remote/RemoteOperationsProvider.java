@@ -1,6 +1,6 @@
 package mil.nga.giat.geowave.core.store.operations.remote;
 
-import mil.nga.giat.geowave.core.cli.spi.CLIOperationProviderSpi;
+import mil.nga.giat.geowave.core.cli.CLIOperationProviderSpi;
 
 public class RemoteOperationsProvider implements
 		CLIOperationProviderSpi
