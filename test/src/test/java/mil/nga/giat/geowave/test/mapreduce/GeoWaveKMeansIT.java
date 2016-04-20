@@ -126,7 +126,8 @@ public class GeoWaveKMeansIT extends
 	public void testIngestAndQueryGeneralGpx()
 			throws Exception {
 		final Map<String, String> options = getAccumuloConfigOptions();
-		testIngest(getAccumuloStorePluginOptions().createDataStore());
+		testIngest(getAccumuloStorePluginOptions(
+				TEST_NAMESPACE).createDataStore());
 
 		runKPlusPlus(new SpatialQuery(
 				dataGenerator.getBoundingRegion()));
@@ -164,7 +165,7 @@ public class GeoWaveKMeansIT extends
 							false,
 							"centroid",
 							new PersistableStore(
-									getAccumuloStorePluginOptions()),
+									getAccumuloStorePluginOptions(TEST_NAMESPACE)),
 							"bx1",
 							hdfsBaseDirectory + "/t1",
 							3,
@@ -175,9 +176,12 @@ public class GeoWaveKMeansIT extends
 				0,
 				res);
 
-		final DataStore dataStore = getAccumuloStorePluginOptions().createDataStore();
-		final IndexStore indexStore = getAccumuloStorePluginOptions().createIndexStore();
-		final AdapterStore adapterStore = getAccumuloStorePluginOptions().createAdapterStore();
+		final DataStore dataStore = getAccumuloStorePluginOptions(
+				TEST_NAMESPACE).createDataStore();
+		final IndexStore indexStore = getAccumuloStorePluginOptions(
+				TEST_NAMESPACE).createIndexStore();
+		final AdapterStore adapterStore = getAccumuloStorePluginOptions(
+				TEST_NAMESPACE).createAdapterStore();
 		final int resultCounLevel1 = countResults(
 				dataStore,
 				indexStore,
@@ -225,7 +229,7 @@ public class GeoWaveKMeansIT extends
 							2,
 							"centroid",
 							new PersistableStore(
-									getAccumuloStorePluginOptions()),
+									getAccumuloStorePluginOptions(TEST_NAMESPACE)),
 							"bx2",
 							hdfsBaseDirectory + "/t2",
 							new NumericRange(
@@ -239,9 +243,12 @@ public class GeoWaveKMeansIT extends
 				0,
 				res2);
 
-		final DataStore dataStore = getAccumuloStorePluginOptions().createDataStore();
-		final IndexStore indexStore = getAccumuloStorePluginOptions().createIndexStore();
-		final AdapterStore adapterStore = getAccumuloStorePluginOptions().createAdapterStore();
+		final DataStore dataStore = getAccumuloStorePluginOptions(
+				TEST_NAMESPACE).createDataStore();
+		final IndexStore indexStore = getAccumuloStorePluginOptions(
+				TEST_NAMESPACE).createIndexStore();
+		final AdapterStore adapterStore = getAccumuloStorePluginOptions(
+				TEST_NAMESPACE).createAdapterStore();
 		final int jumpRresultCounLevel1 = countResults(
 				dataStore,
 				indexStore,

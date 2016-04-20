@@ -6,19 +6,24 @@ import org.junit.Test;
 import mil.nga.giat.geowave.analytic.PropertyManagement;
 import mil.nga.giat.geowave.analytic.param.GlobalParameters;
 
-public class PropertyManagementConverterTest {
+public class PropertyManagementConverterTest
+{
 
 	@Test
-	public void testConverter() throws Exception {
+	public void testConverter()
+			throws Exception {
 		PropertyManagement propMgmt = new PropertyManagement();
-		PropertyManagementConverter conv = new PropertyManagementConverter(propMgmt);
-		
+		PropertyManagementConverter conv = new PropertyManagementConverter(
+				propMgmt);
+
 		DBScanOptions opts = new DBScanOptions();
 		opts.setGlobalBatchId("some-value");
-		
+
 		conv.readProperties(opts);
-		
-		Assert.assertEquals("some-value", propMgmt.getProperty(GlobalParameters.Global.BATCH_ID));
-		
+
+		Assert.assertEquals(
+				"some-value",
+				propMgmt.getProperty(GlobalParameters.Global.BATCH_ID));
+
 	}
 }

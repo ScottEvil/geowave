@@ -254,12 +254,6 @@ public class BasicMapReduceIT extends
 	private void testMapReduceExportAndReingest(
 			final DimensionalityType dimensionalityType )
 			throws Exception {
-		final AccumuloIndexStore indexStore = new AccumuloIndexStore(
-				accumuloOperations);
-		final AccumuloAdapterStore adapterStore = new AccumuloAdapterStore(
-				accumuloOperations);
-		final DataStore dataStore = new AccumuloDataStore(
-				accumuloOperations);
 		final VectorMRExportCommand exportCommand = new VectorMRExportCommand();
 		final VectorMRExportOptions options = exportCommand.getMrOptions();
 		final File exportDir = new File(
@@ -267,7 +261,7 @@ public class BasicMapReduceIT extends
 				TEST_EXPORT_DIRECTORY);
 		exportDir.mkdir();
 
-		exportCommand.setStoreOptions(getAccumuloStorePluginOptions());
+		exportCommand.setStoreOptions(getAccumuloStorePluginOptions(TEST_NAMESPACE));
 		exportCommand.setParameters(
 				hdfs,
 				hdfsBaseDirectory + "/" + TEST_EXPORT_DIRECTORY,
@@ -308,7 +302,7 @@ public class BasicMapReduceIT extends
 			final PrimaryIndex[] indices )
 			throws Exception {
 		final TestJobRunner jobRunner = new TestJobRunner(
-				getAccumuloStorePluginOptions(),
+				getAccumuloStorePluginOptions(TEST_NAMESPACE),
 				expectedResults);
 		jobRunner.setMinInputSplits(MIN_INPUT_SPLITS);
 		jobRunner.setMaxInputSplits(MAX_INPUT_SPLITS);

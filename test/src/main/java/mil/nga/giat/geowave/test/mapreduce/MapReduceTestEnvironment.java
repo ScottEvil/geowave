@@ -73,7 +73,7 @@ abstract public class MapReduceTestEnvironment extends
 		LocalToMapReduceToGeowaveCommand mrGw = new LocalToMapReduceToGeowaveCommand();
 
 		mrGw.setInputIndexOptions(indexOptions);
-		mrGw.setInputStoreOptions(getAccumuloStorePluginOptions());
+		mrGw.setInputStoreOptions(getAccumuloStorePluginOptions(TEST_NAMESPACE));
 
 		mrGw.setPluginFormats(ingestFormatOptions);
 		mrGw.setParameters(

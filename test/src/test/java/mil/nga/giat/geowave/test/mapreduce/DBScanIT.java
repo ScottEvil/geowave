@@ -3,7 +3,6 @@ package mil.nga.giat.geowave.test.mapreduce;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
-import java.util.Map;
 
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
@@ -86,7 +85,8 @@ public class DBScanIT extends
 	public void testDBScan()
 			throws Exception {
 		dataGenerator.setIncludePolygons(false);
-		ingest(getAccumuloStorePluginOptions().createDataStore());
+		ingest(getAccumuloStorePluginOptions(
+				TEST_NAMESPACE).createDataStore());
 		runScan(new SpatialQuery(
 				dataGenerator.getBoundingRegion()));
 	}
@@ -125,7 +125,7 @@ public class DBScanIT extends
 							OrthodromicDistancePartitioner.class,
 							10,
 							new PersistableStore(
-									getAccumuloStorePluginOptions()),
+									getAccumuloStorePluginOptions(TEST_NAMESPACE)),
 							hdfsBaseDirectory + "/t1",
 							2,
 							GeoWaveInputFormatConfiguration.class,
@@ -146,9 +146,12 @@ public class DBScanIT extends
 	private int readHulls()
 			throws Exception {
 		final CentroidManager<SimpleFeature> centroidManager = new CentroidManagerGeoWave<SimpleFeature>(
-				getAccumuloStorePluginOptions().createDataStore(),
-				getAccumuloStorePluginOptions().createIndexStore(),
-				getAccumuloStorePluginOptions().createAdapterStore(),
+				getAccumuloStorePluginOptions(
+						TEST_NAMESPACE).createDataStore(),
+				getAccumuloStorePluginOptions(
+						TEST_NAMESPACE).createIndexStore(),
+				getAccumuloStorePluginOptions(
+						TEST_NAMESPACE).createAdapterStore(),
 				new SimpleFeatureItemWrapperFactory(),
 				"concave_hull",
 				new SpatialDimensionalityTypeProvider().createPrimaryIndex().getId().getString(),

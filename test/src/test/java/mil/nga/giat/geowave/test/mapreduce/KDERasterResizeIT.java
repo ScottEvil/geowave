@@ -98,12 +98,8 @@ public class KDERasterResizeIT extends
 					null,
 					null);
 
-			command.setInputStoreOptions(getAccumuloStorePluginOptions());
-
-			final DataStorePluginOptions outputStore = getAccumuloStorePluginOptions();
-			outputStore.getFactoryOptions().setGeowaveNamespace(
-					TEST_COVERAGE_NAMESPACE);
-			command.setOutputStoreOptions(outputStore);
+			command.setInputStoreOptions(getAccumuloStorePluginOptions(TEST_NAMESPACE));
+			command.setOutputStoreOptions(getAccumuloStorePluginOptions(TEST_COVERAGE_NAMESPACE));
 
 			command.getKdeOptions().setFeatureType(
 					KDE_FEATURE_TYPE_NAME);
@@ -183,15 +179,8 @@ public class KDERasterResizeIT extends
 					null,
 					null);
 
-			final DataStorePluginOptions inputStore = getAccumuloStorePluginOptions();
-			inputStore.getFactoryOptions().setGeowaveNamespace(
-					TEST_COVERAGE_NAMESPACE);
-			command.setInputStoreOptions(inputStore);
-
-			final DataStorePluginOptions outputStore = getAccumuloStorePluginOptions();
-			outputStore.getFactoryOptions().setGeowaveNamespace(
-					TEST_COVERAGE_NAMESPACE);
-			command.setOutputStoreOptions(outputStore);
+			command.setInputStoreOptions(getAccumuloStorePluginOptions(TEST_COVERAGE_NAMESPACE));
+			command.setOutputStoreOptions(getAccumuloStorePluginOptions(TEST_COVERAGE_NAMESPACE));
 
 			command.getOptions().setInputCoverageName(
 					originalTileSizeCoverageName);
