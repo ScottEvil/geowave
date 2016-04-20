@@ -96,7 +96,9 @@ public class OperationParser
 			// Parse without validation so we can prepare.
 			params.getCommander().setAcceptUnknownOptions(
 					true);
-			params.getCommander().parseWithoutValidation(
+			params.getCommander().setValidate(
+					false);
+			params.getCommander().parse(
 					params.getArgs());
 
 			if (!prepare(params)) {
@@ -115,14 +117,10 @@ public class OperationParser
 			}
 			params.getCommander().setAcceptUnknownOptions(
 					params.isAllowUnknown());
-			if (params.isValidate()) {
-				params.getCommander().parse(
-						params.getArgs());
-			}
-			else {
-				params.getCommander().parseWithoutValidation(
-						params.getArgs());
-			}
+			params.getCommander().setValidate(
+					params.isValidate());
+			params.getCommander().parse(
+					params.getArgs());
 		}
 		catch (ParameterException p) {
 			params.setSuccessCode(-1);

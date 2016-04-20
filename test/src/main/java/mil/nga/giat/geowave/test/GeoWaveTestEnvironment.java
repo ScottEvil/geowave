@@ -162,7 +162,7 @@ abstract public class GeoWaveTestEnvironment
 
 	}
 
-	protected DataStorePluginOptions getAccumuloStorePluginOptions(
+	protected static DataStorePluginOptions getAccumuloStorePluginOptions(
 			String namespace ) {
 		DataStorePluginOptions pluginOptions = new DataStorePluginOptions();
 		AccumuloRequiredOptions opts = new AccumuloRequiredOptions();

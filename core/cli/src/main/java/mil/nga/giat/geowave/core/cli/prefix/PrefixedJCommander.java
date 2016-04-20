@@ -7,6 +7,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import org.apache.commons.lang3.NotImplementedException;
+
 import com.beust.jcommander.IDefaultProvider;
 import com.beust.jcommander.JCommander;
 
@@ -29,6 +31,7 @@ public class PrefixedJCommander extends
 	// into the internal JCommander object.
 	private List<Object> prefixedObjects = null;
 
+	private boolean validate = true;
 	private boolean allowUnknown = false;
 	private IDefaultProvider defaultProvider = null;
 
@@ -126,6 +129,7 @@ public class PrefixedJCommander extends
 				aliases);
 		comm.setDefaultProvider(defaultProvider);
 		comm.setAcceptUnknownOptions(allowUnknown);
+		comm.setValidate(validate);
 
 		if (object != null) {
 			comm.addPrefixedObject(object);
@@ -140,16 +144,25 @@ public class PrefixedJCommander extends
 	public void parse(
 			String... args ) {
 		createMap();
-		super.parse(args);
+		if (validate) {
+			super.parse(args);
+		}
+		else {
+			super.parseWithoutValidation(args);
+		}
 		translationMap.transformToOriginal();
 	}
 
+	/**
+	 * We replace the parseWithoutValidation() command with the setValidate
+	 * option that we apply to all children. This is because of bug #267 in
+	 * JCommander.
+	 */
 	@Override
 	public void parseWithoutValidation(
 			String... args ) {
-		createMap();
-		super.parseWithoutValidation(args);
-		translationMap.transformToOriginal();
+		throw new NotImplementedException(
+				"Do not use this method.  Use setValidate()");
 	}
 
 	@Override
@@ -164,6 +177,11 @@ public class PrefixedJCommander extends
 			boolean allowUnknown ) {
 		super.setAcceptUnknownOptions(allowUnknown);
 		this.allowUnknown = allowUnknown;
+	}
+
+	public void setValidate(
+			boolean validate ) {
+		this.validate = validate;
 	}
 
 	public List<Object> getPrefixedObjects() {

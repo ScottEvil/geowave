@@ -45,6 +45,7 @@ import mil.nga.giat.geowave.core.index.ByteArrayUtils;
 import mil.nga.giat.geowave.core.store.DataStore;
 import mil.nga.giat.geowave.core.store.adapter.DataAdapter;
 import mil.nga.giat.geowave.core.store.adapter.WritableDataAdapter;
+import mil.nga.giat.geowave.core.store.config.ConfigUtils;
 import mil.nga.giat.geowave.core.store.index.PrimaryIndex;
 import mil.nga.giat.geowave.core.store.operations.remote.options.DataStorePluginOptions;
 import mil.nga.giat.geowave.core.store.query.DistributableQuery;
@@ -381,7 +382,7 @@ public class BasicMapReduceIT extends
 			job.setSpeculativeExecution(false);
 			GeoWaveInputFormat.setStoreConfigOptions(
 					job.getConfiguration(),
-					getAccumuloConfigOptions());
+					ConfigUtils.populateListFromOptions(dataStoreOptions));
 			FileInputFormat.setInputPaths(
 					job,
 					getHdfsOutputPath());

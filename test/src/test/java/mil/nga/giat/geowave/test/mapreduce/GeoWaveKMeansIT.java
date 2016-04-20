@@ -3,7 +3,6 @@ package mil.nga.giat.geowave.test.mapreduce;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import org.apache.accumulo.core.client.AccumuloException;
 import org.apache.accumulo.core.client.AccumuloSecurityException;
@@ -125,7 +124,6 @@ public class GeoWaveKMeansIT extends
 	@Test
 	public void testIngestAndQueryGeneralGpx()
 			throws Exception {
-		final Map<String, String> options = getAccumuloConfigOptions();
 		testIngest(getAccumuloStorePluginOptions(
 				TEST_NAMESPACE).createDataStore());
 

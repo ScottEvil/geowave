@@ -43,11 +43,11 @@ public class GeoWaveMain
 		// Log error to console if any.
 		if (params.getSuccessCode() != 0) {
 			doHelp(params);
-			LOGGER.error(
+			LOGGER.debug(
 					params.getSuccessMessage(),
 					params.getSuccessException());
 			JCommander.getConsole().println(
-					params.getSuccessMessage());
+					"\n" + params.getSuccessMessage());
 		}
 		else if (!params.isCommandPresent()) {
 			doHelp(params);

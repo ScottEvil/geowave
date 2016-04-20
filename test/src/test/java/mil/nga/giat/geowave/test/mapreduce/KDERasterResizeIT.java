@@ -25,6 +25,7 @@ import mil.nga.giat.geowave.adapter.raster.plugin.GeoWaveRasterReader;
 import mil.nga.giat.geowave.analytic.mapreduce.operations.KdeCommand;
 import mil.nga.giat.geowave.core.cli.parser.ManualOperationParams;
 import mil.nga.giat.geowave.core.store.StoreFactoryOptions;
+import mil.nga.giat.geowave.core.store.config.ConfigUtils;
 import mil.nga.giat.geowave.core.store.operations.remote.options.DataStorePluginOptions;
 import mil.nga.giat.geowave.datastore.accumulo.util.ConnectorPool;
 import mil.nga.giat.geowave.test.GeoWaveTestEnvironment;
@@ -250,13 +251,14 @@ public class KDERasterResizeIT extends
 			final Rectangle pixelDimensions,
 			double[][][] expectedResults )
 			throws Exception {
-		final Map<String, String> options = getAccumuloConfigOptions();
 		final StringBuilder str = new StringBuilder(
 				StoreFactoryOptions.GEOWAVE_NAMESPACE_OPTION).append(
 				"=").append(
 				TEST_COVERAGE_NAMESPACE).append(
 				";equalizeHistogramOverride=false;interpolationOverride=").append(
 				Interpolation.INTERP_NEAREST);
+
+		Map<String, String> options = ConfigUtils.populateListFromOptions(getAccumuloStorePluginOptions(null));
 
 		for (final Entry<String, String> entry : options.entrySet()) {
 			if (!entry.getKey().equals(
