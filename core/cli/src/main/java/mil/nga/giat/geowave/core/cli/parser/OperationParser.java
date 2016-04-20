@@ -89,7 +89,8 @@ public class OperationParser
 					params));
 			params.setCommander(pluginCommander);
 			for (Object obj : additionalObjects) {
-				params.getCommander().addPrefixedObject(obj);
+				params.getCommander().addPrefixedObject(
+						obj);
 			}
 
 			// Parse without validation so we can prepare.
@@ -109,7 +110,8 @@ public class OperationParser
 					params));
 			params.setCommander(finalCommander);
 			for (Object obj : additionalObjects) {
-				params.getCommander().addPrefixedObject(obj);
+				params.getCommander().addPrefixedObject(
+						obj);
 			}
 			params.getCommander().setAcceptUnknownOptions(
 					params.isAllowUnknown());
@@ -148,7 +150,8 @@ public class OperationParser
 			PrefixedJCommander pluginCommander = new PrefixedJCommander();
 			params.setCommander(pluginCommander);
 			for (Object obj : additionalObjects) {
-				params.getCommander().addPrefixedObject(obj);
+				params.getCommander().addPrefixedObject(
+						obj);
 			}
 			params.getCommander().parse(
 					params.getArgs());
